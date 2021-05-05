@@ -1,0 +1,59 @@
+id: VHFPulseDetect_pulse_detect_ff
+label: Pulse Detect
+category: '[VHFPulseDetect]'
+
+templates:
+  imports: import VHFPulseDetect2
+  make: VHFPulseDetect2.pulse_detect_ff(${threshold}, ${pulseDuration}, ${sampleRate})
+  callbacks:
+  - set_threshold(${threshold})
+  - set_pulseDuration(${pulseDuration})
+  - set_sampleRate(${sampleRate})
+
+#  Make one 'parameters' list entry for every parameter you want settable from the GUI.
+#     Keys include:
+#     * id (makes the value accessible as \$keyname, e.g. in the make entry)
+#     * label (label shown in the GUI)
+#     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
+parameters:
+- id: threshold
+  label: Threshold
+  dtype: float
+  default: '4.0'
+- id: pulseDuration
+  label: Pulse duration
+  dtype: float
+  default: '0.015'
+- id: sampleRate
+  label: Sample rate
+  dtype: int
+  default: '3000000'
+
+#  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
+#  Keys include:
+#      * label (an identifier for the GUI)
+#      * domain (optional - stream or message. Default is stream)
+#      * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
+#      * vlen (optional - data stream vector length. Default is 1)
+#      * optional (optional - set to 1 for optional inputs. Default is 0)
+inputs:
+- label: in
+  dtype: float
+
+outputs:
+- label: pulseDetect
+  dtype: float
+- label: pulse
+  dtype: float
+- label: movingAverage
+  dtype: float
+- label: movingVariance
+  dtype: float
+- label: movingStdDev
+  dtype: float
+- label: threshold
+  dtype: float
+
+#  'file_format' specifies the version of the GRC yml format used in the file
+#  and should usually not be changed.
+file_format: 1

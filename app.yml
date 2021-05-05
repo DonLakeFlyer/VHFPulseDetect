@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  vhf-pulse-detect:
+    image: vhf-pulse-detect
+    container_name: vhf-pulse-detect
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - '/data/app/vhf-pulse-detect/data:/data'
+    devices:
+      - '/dev/bus/usb:/dev/bus/usb'
+      - '/dev/airspy:/dev/airspy'
+    privileged: true

@@ -1,0 +1,367 @@
+options:
+  parameters:
+    author: ''
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: no_gui
+    hier_block_src_path: '.:'
+    id: PulseDetectCmdLineUDP
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: '1'
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: ''
+    window_size: 3072,1024
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: final_samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: samp_rate/total_decimation
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [136, 181]
+    rotation: 0
+    state: enabled
+- name: total_decimation
+  id: variable
+  parameters:
+    comment: ''
+    value: 16*16*final_decimation
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 181]
+    rotation: 0
+    state: enabled
+- name: PulseDetectBase
+  id: PulseDetectBase
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    final_decimation: final_decimation
+    gain: gain
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    pllFreqMax: '100'
+    pulse_duration: pulse_duration
+    pulse_freq: pulse_freq
+    samp_rate: samp_rate
+    wnT: math.pi/4.0*0+0.635
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 249]
+    rotation: 0
+    state: enabled
+- name: VHFPulseDetect_pulse_detect_ff_0
+  id: VHFPulseDetect_pulse_detect_ff
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    pulseDuration: pulse_duration
+    sampleRate: int(final_samp_rate)
+    threshold: '2.5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [374, 222]
+    rotation: 0
+    state: enabled
+- name: VHFPulseSender_udp_sender_f_0
+  id: VHFPulseSender_udp_sender_f
+  parameters:
+    affinity: ''
+    alias: ''
+    channel_index: channel_index
+    comment: ''
+    localhost: localhost
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [659, 197]
+    rotation: 0
+    state: enabled
+- name: blocks_vector_sink_x_0
+  id: blocks_vector_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    reserve_items: '1024'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [232, 377]
+    rotation: 0
+    state: enabled
+- name: blocks_vector_sink_x_1
+  id: blocks_vector_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    reserve_items: '1024'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [658, 318]
+    rotation: 0
+    state: enabled
+- name: blocks_vector_sink_x_1_1
+  id: blocks_vector_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    reserve_items: '1024'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [658, 350]
+    rotation: 0
+    state: enabled
+- name: blocks_vector_sink_x_1_1_0
+  id: blocks_vector_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    reserve_items: '1024'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [659, 254]
+    rotation: 0
+    state: enabled
+- name: blocks_vector_sink_x_1_2
+  id: blocks_vector_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    reserve_items: '1024'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [658, 286]
+    rotation: 0
+    state: enabled
+- name: blocks_vector_sink_x_1_3
+  id: blocks_vector_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    reserve_items: '1024'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [659, 382]
+    rotation: 0
+    state: enabled
+- name: channel_index
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ''
+    short_id: ''
+    type: intx
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [208, 102]
+    rotation: 0
+    state: enabled
+- name: final_decimation
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ''
+    short_id: ''
+    type: intx
+    value: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [424, 100]
+    rotation: 0
+    state: enabled
+- name: gain
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ''
+    short_id: ''
+    type: intx
+    value: '21'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [552, 100]
+    rotation: 0
+    state: enabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import math
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [200, 12]
+    rotation: 0
+    state: enabled
+- name: import_0_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import cmath
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [304, 12]
+    rotation: 0
+    state: enabled
+- name: localhost
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ''
+    short_id: ''
+    type: intx
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [328, 100]
+    rotation: 0
+    state: enabled
+- name: pulse_duration
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ''
+    short_id: ''
+    type: eng_float
+    value: '0.015'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [648, 100]
+    rotation: 0
+    state: enabled
+- name: pulse_freq
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ''
+    short_id: ''
+    type: intx
+    value: '146000000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 102]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ''
+    short_id: ''
+    type: eng_float
+    value: 3e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [104, 102]
+    rotation: 0
+    state: enabled
+
+connections:
+- [PulseDetectBase, '0', VHFPulseDetect_pulse_detect_ff_0, '0']
+- [PulseDetectBase, '1', blocks_vector_sink_x_0, '0']
+- [VHFPulseDetect_pulse_detect_ff_0, '0', VHFPulseSender_udp_sender_f_0, '0']
+- [VHFPulseDetect_pulse_detect_ff_0, '1', blocks_vector_sink_x_1_1_0, '0']
+- [VHFPulseDetect_pulse_detect_ff_0, '2', blocks_vector_sink_x_1_2, '0']
+- [VHFPulseDetect_pulse_detect_ff_0, '3', blocks_vector_sink_x_1, '0']
+- [VHFPulseDetect_pulse_detect_ff_0, '4', blocks_vector_sink_x_1_1, '0']
+- [VHFPulseDetect_pulse_detect_ff_0, '5', blocks_vector_sink_x_1_3, '0']
+
+metadata:
+  file_format: 1
