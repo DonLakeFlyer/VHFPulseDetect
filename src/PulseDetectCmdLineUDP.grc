@@ -101,9 +101,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    channel_index: channel_index
     comment: ''
-    localhost: localhost
   states:
     bus_sink: false
     bus_source: false
@@ -207,23 +205,6 @@ blocks:
     coordinate: [659, 382]
     rotation: 0
     state: enabled
-- name: channel_index
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: ''
-    short_id: ''
-    type: intx
-    value: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [208, 102]
-    rotation: 0
-    state: enabled
 - name: final_decimation
   id: parameter
   parameters:
@@ -238,7 +219,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [424, 100]
+    coordinate: [197, 102]
     rotation: 0
     state: enabled
 - name: gain
@@ -255,7 +236,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [552, 100]
+    coordinate: [324, 102]
     rotation: 0
     state: enabled
 - name: import_0
@@ -284,23 +265,6 @@ blocks:
     coordinate: [304, 12]
     rotation: 0
     state: enabled
-- name: localhost
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: ''
-    short_id: ''
-    type: intx
-    value: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [328, 100]
-    rotation: 0
-    state: enabled
 - name: pulse_duration
   id: parameter
   parameters:
@@ -315,7 +279,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [648, 100]
+    coordinate: [413, 102]
     rotation: 0
     state: enabled
 - name: pulse_freq

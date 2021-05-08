@@ -4,22 +4,7 @@ category: '[VHFPulseSender]'
 
 templates:
   imports: import VHFPulseSender2
-  make: VHFPulseSender2.udp_sender_f(${channel_index}, ${localhost})
-
-#  Make one 'parameters' list entry for every parameter you want settable from the GUI.
-#     Keys include:
-#     * id (makes the value accessible as \$keyname, e.g. in the make entry)
-#     * label (label shown in the GUI)
-#     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
-parameters:
-- id: channel_index
-  label: Channel Index
-  dtype: int
-  default: '0'
-- id: localhost
-  label: localhost
-  dtype: int
-  default: '0'
+  make: VHFPulseSender2.udp_sender_f()
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:

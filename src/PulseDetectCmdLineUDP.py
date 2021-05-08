@@ -27,16 +27,14 @@ import math
 
 class PulseDetectCmdLineUDP(gr.top_block):
 
-    def __init__(self, channel_index=0, final_decimation=4, gain=21, localhost=0, pulse_duration=0.015, pulse_freq=146000000, samp_rate=3e6):
+    def __init__(self, final_decimation=4, gain=21, pulse_duration=0.015, pulse_freq=146000000, samp_rate=3e6):
         gr.top_block.__init__(self, "Pulsedetectcmdlineudp")
 
         ##################################################
         # Parameters
         ##################################################
-        self.channel_index = channel_index
         self.final_decimation = final_decimation
         self.gain = gain
-        self.localhost = localhost
         self.pulse_duration = pulse_duration
         self.pulse_freq = pulse_freq
         self.samp_rate = samp_rate
@@ -56,7 +54,7 @@ class PulseDetectCmdLineUDP(gr.top_block):
         self.blocks_vector_sink_x_1_1 = blocks.vector_sink_f(1, 1024)
         self.blocks_vector_sink_x_1 = blocks.vector_sink_f(1, 1024)
         self.blocks_vector_sink_x_0 = blocks.vector_sink_c(1, 1024)
-        self.VHFPulseSender_udp_sender_f_0 = VHFPulseSender2.udp_sender_f(channel_index, localhost)
+        self.VHFPulseSender_udp_sender_f_0 = VHFPulseSender2.udp_sender_f()
         self.VHFPulseDetect_pulse_detect_ff_0 = VHFPulseDetect2.pulse_detect_ff(2.5, pulse_duration, int(final_samp_rate))
         self.PulseDetectBase = PulseDetectBase(
             final_decimation=final_decimation,
@@ -81,15 +79,6 @@ class PulseDetectCmdLineUDP(gr.top_block):
         self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 1), (self.blocks_vector_sink_x_1_1_0, 0))
         self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 2), (self.blocks_vector_sink_x_1_2, 0))
         self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 5), (self.blocks_vector_sink_x_1_3, 0))
-        # The following line is modified from the .grc output. It connects the two objects  
-        # such that udp_sender can change parameters in PulseDetectBase.  
-        self.VHFPulseSender_udp_sender_f_0.setPulseDetectBase(self.PulseDetectBase)      
-
-    def get_channel_index(self):
-        return self.channel_index
-
-    def set_channel_index(self, channel_index):
-        self.channel_index = channel_index
 
     def get_final_decimation(self):
         return self.final_decimation
@@ -105,12 +94,6 @@ class PulseDetectCmdLineUDP(gr.top_block):
     def set_gain(self, gain):
         self.gain = gain
         self.PulseDetectBase.set_gain(self.gain)
-
-    def get_localhost(self):
-        return self.localhost
-
-    def set_localhost(self, localhost):
-        self.localhost = localhost
 
     def get_pulse_duration(self):
         return self.pulse_duration
@@ -153,17 +136,11 @@ class PulseDetectCmdLineUDP(gr.top_block):
 def argument_parser():
     parser = ArgumentParser()
     parser.add_argument(
-        "--channel-index", dest="channel_index", type=intx, default=0,
-        help="Set channel_index [default=%(default)r]")
-    parser.add_argument(
         "--final-decimation", dest="final_decimation", type=intx, default=4,
         help="Set final_decimation [default=%(default)r]")
     parser.add_argument(
         "--gain", dest="gain", type=intx, default=21,
         help="Set gain [default=%(default)r]")
-    parser.add_argument(
-        "--localhost", dest="localhost", type=intx, default=0,
-        help="Set localhost [default=%(default)r]")
     parser.add_argument(
         "--pulse-duration", dest="pulse_duration", type=eng_float, default="15.0m",
         help="Set pulse_duration [default=%(default)r]")
@@ -181,7 +158,7 @@ def main(top_block_cls=PulseDetectCmdLineUDP, options=None):
         options = argument_parser().parse_args()
     if gr.enable_realtime_scheduling() != gr.RT_OK:
         print("Error: failed to enable real-time scheduling.")
-    tb = top_block_cls(channel_index=options.channel_index, final_decimation=options.final_decimation, gain=options.gain, localhost=options.localhost, pulse_duration=options.pulse_duration, pulse_freq=options.pulse_freq, samp_rate=options.samp_rate)
+    tb = top_block_cls(final_decimation=options.final_decimation, gain=options.gain, pulse_duration=options.pulse_duration, pulse_freq=options.pulse_freq, samp_rate=options.samp_rate)
 
     def sig_handler(sig=None, frame=None):
         tb.stop()

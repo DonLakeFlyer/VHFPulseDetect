@@ -1,12 +1,6 @@
 # This goes at the top
 import signal
 
-# This goes after the Connections section
-
-        # The following line is modified from the .grc output. It connects the two objects  
-        # such that udp_sender can change parameters in PulseDetectBase.  
-        self.VHFPulseSender_udp_sender_f_0.setPulseDetectBase(self.PulseDetectBase)      
-
 # main should look like this
     try:
         tb = top_block_cls(channel_index=options.channel_index, final_decimation=options.final_decimation, gain=options.gain, localhost=options.localhost, pulse_duration=options.pulse_duration, pulse_freq=options.pulse_freq, samp_rate=options.samp_rate)
