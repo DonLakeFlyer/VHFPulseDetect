@@ -1,11 +1,38 @@
-# vhf-pulse-detect
+# VHF Pulse Detect
 
-## Introduction
+This repository contains source for detection of a VHF pulse at a specific frequency as output by wildlife research collars. It can be run standalone from GNU Radio Companion or on a companion computer running on a drone.
 
-The `vhf-pulse-detect` is an application written in C++ and using mavsdk to get telemetry from the flight controller (over mavlink) and print the data to the standard output.
+## GNU Radio
 
-This application is composed of one Docker container based on `auterion/ubuntu-mavsdk:0.35.1`. This base image is itself based on Ubuntu Focal ARM64V8 (20.04) and contains essential build dependencies to build C++ programs. It also contains mavsdk v0.35.1.
-Our container is built using the [multi-stage](https://docs.docker.com/develop/develop-images/multistage-build/) feature from Docker. In the first stage (`build-stage`) we copy our source code and build our application. In the second stage (`release-stage`), we copy the mavsdk binaries from `auterion/ubuntu-mavsdk:0.35.1` and our application binary from the first stage, we also need to install all the dependencies needed to run our application. Finally, using the command `ENTRYPOINT`, we define the startup command that Docker will use to start our container.
+### [PulseDetectGui.grc](https://github.com/DonLakeFlyer/VHFPulseDetect/blob/master/src/PulseDetectGui.grc)
+
+This GNU Radio Companion program can be used as a gui for testing the gnu radio scripts which do the pulse detection. They are meant to be used with an AirSpy Mini as the SDR. It's also handy to do things like range testing of the vhf processing. 
+
+### [PulseDetectBase.grc](https://github.com/DonLakeFlyer/VHFPulseDetect/blob/master/src/PulseDetectBase.grc)
+
+This is the main part of VHF signal processing. The construction of this block is based on the dicussion here: https://lists.gnu.org/archive/html/discuss-gnuradio/2017-03/msg00083.html.
+
+Overview of block steps:
+* Apply low pass decimating filter multiple times to increase sensitivity/range
+* Send the output through a PLL to lock to the specified frequency
+* Multiply the PLL and signal output together to filter out freqs we aren't looking for
+* Run that through a moving average filter to reduce noise
+
+### [gr-VHFPulseDetect2](https://github.com/DonLakeFlyer/VHFPulseDetect/tree/master/src/gr-VHFPulseDetect2)
+
+This custom block is used for pulse detection from the processed VHF signal. It is loosely based on the discussion here: https://stackoverflow.com/questions/22583391/peak-signal-detection-in-realtime-timeseries-data/22640362#22640362. It uses a moving window standard deviation to determine whether there is a true pulse or just noise.
+
+### [gr-VHFPulseSender2](https://github.com/DonLakeFlyer/VHFPulseDetect/tree/master/src/gr-VHFPulseSender2)
+
+This custom block is used to send pulse values out over a UDP port.
+
+### [PulseDetectCommandLineUDP](https://github.com/DonLakeFlyer/VHFPulseDetect/tree/master/src/PulseDetectCommandLineUDP.py)
+
+This is a python script which can be run on a companion computer which will output pulses found over UDP. It is created from the corresponding grc block.
+
+## Auterion Skynode
+
+There is also support for deploying all of this to a Skynode docker as the `vhf-pulse-detect` skynode application. This is still a WIP and is not yet fully complete.
 
 ## Commands
 
