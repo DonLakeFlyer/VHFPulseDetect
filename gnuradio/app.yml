@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-  vhf-pulse-detect:
+  VHFPulseDetect:
     image: vhf-pulse-detect
     container_name: vhf-pulse-detect
     restart: unless-stopped

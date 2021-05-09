@@ -1,0 +1,4 @@
+# Skynode host OS must have a udev rules file in order to make the Airspy dongle work correctly
+# http://xdeco.org/?p=216
+mount -o remount,rw /
+echo SUBSYSTEM=="usb", ATTRS{idVendor}=="1d50", ATTRS{idProduct}=="60a1", GROUP="plugdev", MODE="0666", SYMLINK+="airspy" > /etc/udev/rules.d/airspy.rules 

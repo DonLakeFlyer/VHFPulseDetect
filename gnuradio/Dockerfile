@@ -3,6 +3,7 @@ FROM auterion/skynode:customer-base-v2.0.0.0
 ENV PYTHONUNBUFFERED=0
 ENV PYTHONPATH=/usr/local/lib/python3/dist-packages:/usr/local/lib/python3/dist-packages/VHFPulseSender2
 
+# Install gnu radio dependencies
 RUN apt update && \ 
     apt install -y --no-install-recommends \
         liborc-0.4-dev \
@@ -16,6 +17,7 @@ RUN apt update && \
         python3 python3-pip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+RUN pip3 install six
 
 WORKDIR /buildroot/gr-VHFPulseDetect2/
 COPY gr-VHFPulseDetect2 .
@@ -36,11 +38,8 @@ RUN cmake ../ && \
 RUN rm -rf /buildroot
 
 WORKDIR /app
-COPY --from=auterion/ubuntu-python-mavsdk:latest /install /usr/lib/python3/dist-packages/
-COPY get_telemetry.py /app/get_telemetry.py
-COPY PulseDetectBase.py /app/PulseDetectBase.py
-COPY PulseDetectBase.py.xml /app/PulseDetectBase.py.xml
-COPY PulseDetectCmdLineUDP.py /app/PulseDetectCmdLineUDP.py
+COPY PulseDetectBase.py .
+COPY PulseDetectBase.py.xml .
+COPY PulseDetectCmdLineUDP.py .
 
-
-ENTRYPOINT [ "python3", "/app/PulseDetectCmdLineUDP.py", "--localhost", "1" ]
+ENTRYPOINT [ "python3", "/app/PulseDetectCmdLineUDP.py" ]

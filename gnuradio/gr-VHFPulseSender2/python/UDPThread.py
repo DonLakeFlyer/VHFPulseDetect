@@ -5,6 +5,7 @@ import socket
 import select
 import struct
 import time
+import logging
 
 try:
     from gpiozero import CPUTemperature
@@ -22,7 +23,7 @@ class UDPThread (threading.Thread):
 		self.pulseQueue = pulseQueue
 		self.sendIndex = 0
 		self.udpSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		self.udpSocket.bind(('localhost', 10076))
+		self.udpSocket.bind(('localhost', 10001))
 		self.sendAddress = ('localhost', 10000) 
 		self.udpSocket.setblocking(False)
 
@@ -30,6 +31,7 @@ class UDPThread (threading.Thread):
 		while True:
 			pulseValue = self.pulseQueue.get(True)
 			print("UDPThread pulseValue", pulseValue)
+			logging.warning("pulseValue %f", pulseValue)
 
 			packedData = struct.pack('<if', self.sendIndex, pulseValue)
 			try:

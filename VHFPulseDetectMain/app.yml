@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  vhf-pulse-mavlink:
+    image: vhf-pulse-mavlink
+    container_name: vhf-pulse-mavlink
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - '/data/app/vhf-pulse-mavlink/data:/data'
