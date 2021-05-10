@@ -31,7 +31,7 @@ class UDPThread (threading.Thread):
 		while True:
 			pulseValue = self.pulseQueue.get(True)
 			print("UDPThread pulseValue", pulseValue)
-			logging.warning("pulseValue %f", pulseValue)
+			logging.debug("UDPThread pulseValue %f", pulseValue)
 
 			packedData = struct.pack('<if', self.sendIndex, pulseValue)
 			try:

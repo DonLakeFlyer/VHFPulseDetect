@@ -24,6 +24,7 @@ import VHFPulseDetect2
 import VHFPulseSender2
 import cmath
 import math
+import logging
 
 class PulseDetectCmdLineUDP(gr.top_block):
 
@@ -169,13 +170,12 @@ def main(top_block_cls=PulseDetectCmdLineUDP, options=None):
     signal.signal(signal.SIGTERM, sig_handler)
 
     tb.start()
-    try:
-        input('Press Enter to quit: ')
-    except EOFError:
-        pass
+    while True:
+        signal.pause()  
     tb.stop()
     tb.wait()
 
 
 if __name__ == '__main__':
+    logging.basicConfig(filename='vhf-pulse-detect.log', level=logging.DEBUG)
     main()
