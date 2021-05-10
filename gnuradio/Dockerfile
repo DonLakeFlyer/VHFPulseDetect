@@ -41,5 +41,8 @@ WORKDIR /app
 COPY PulseDetectBase.py .
 COPY PulseDetectBase.py.xml .
 COPY PulseDetectCmdLineUDP.py .
+COPY simple.py .
+COPY udpTest.py .
 
 ENTRYPOINT [ "python3", "/app/PulseDetectCmdLineUDP.py" ]
+#ENTRYPOINT [ "python3", "/app/simple.py" ]
