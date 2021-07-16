@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: GPL-3.0
 #
 # GNU Radio Python Flow Graph
-# Title: Pulsedetectgui
+# Title: Airspygui
 # GNU Radio version: 3.8.1.0
 
 from distutils.version import StrictVersion
@@ -24,15 +24,12 @@ import os
 import sys
 sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnuradio')))
 
-from AirspyFileSource import AirspyFileSource  # grc-generated hier_block
 from AirspySource import AirspySource  # grc-generated hier_block
 from PhaseLockLoop import PhaseLockLoop  # grc-generated hier_block
 from PyQt5 import Qt
-from PyQt5.QtCore import QObject, pyqtSlot
 from gnuradio import qtgui
 from gnuradio.filter import firdes
 import sip
-from gnuradio import blocks
 from gnuradio import gr
 import signal
 from argparse import ArgumentParser
@@ -44,12 +41,12 @@ import cmath
 import math
 from gnuradio import qtgui
 
-class PulseDetectGUI(gr.top_block, Qt.QWidget):
+class AirspyGui(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Pulsedetectgui")
+        gr.top_block.__init__(self, "Airspygui")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("Pulsedetectgui")
+        self.setWindowTitle("Airspygui")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -67,7 +64,7 @@ class PulseDetectGUI(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "PulseDetectGUI")
+        self.settings = Qt.QSettings("GNU Radio", "AirspyGui")
 
         try:
             if StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
@@ -82,7 +79,6 @@ class PulseDetectGUI(gr.top_block, Qt.QWidget):
         ##################################################
         self.total_decimation = total_decimation = 16*16*4
         self.samp_rate = samp_rate = 3e6
-        self.source_index = source_index = 0
         self.pulse_freq = pulse_freq = 146000000
         self.pulse_duration = pulse_duration = 0.015
         self.gain = gain = 21
@@ -95,35 +91,6 @@ class PulseDetectGUI(gr.top_block, Qt.QWidget):
         self._gain_win = RangeWidget(self._gain_range, self.set_gain, 'Gain', "counter_slider", int)
         self.top_grid_layout.addWidget(self._gain_win, 2, 0, 1, 1)
         for r in range(2, 3):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
-        # Create the options list
-        self._source_index_options = (0, 1, )
-        # Create the labels list
-        self._source_index_labels = ('Airspy SDR', 'Airspy File', )
-        # Create the combo box
-        # Create the radio buttons
-        self._source_index_group_box = Qt.QGroupBox('source_index' + ": ")
-        self._source_index_box = Qt.QHBoxLayout()
-        class variable_chooser_button_group(Qt.QButtonGroup):
-            def __init__(self, parent=None):
-                Qt.QButtonGroup.__init__(self, parent)
-            @pyqtSlot(int)
-            def updateButtonChecked(self, button_id):
-                self.button(button_id).setChecked(True)
-        self._source_index_button_group = variable_chooser_button_group()
-        self._source_index_group_box.setLayout(self._source_index_box)
-        for i, _label in enumerate(self._source_index_labels):
-            radio_button = Qt.QRadioButton(_label)
-            self._source_index_box.addWidget(radio_button)
-            self._source_index_button_group.addButton(radio_button, i)
-        self._source_index_callback = lambda i: Qt.QMetaObject.invokeMethod(self._source_index_button_group, "updateButtonChecked", Qt.Q_ARG("int", self._source_index_options.index(i)))
-        self._source_index_callback(self.source_index)
-        self._source_index_button_group.buttonClicked[int].connect(
-            lambda i: self.set_source_index(self._source_index_options[i]))
-        self.top_grid_layout.addWidget(self._source_index_group_box, 0, 0, 1, 1)
-        for r in range(0, 1):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(0, 1):
             self.top_grid_layout.setColumnStretch(c, 1)
@@ -273,9 +240,7 @@ class PulseDetectGUI(gr.top_block, Qt.QWidget):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(0, 1):
             self.top_grid_layout.setColumnStretch(c, 1)
-        self.blocks_selector_0 = blocks.selector(gr.sizeof_gr_complex*1,0,0)
-        self.blocks_selector_0.set_enabled(True)
-        self.VHFPulseDetect_pulse_detect_ff_0 = VHFPulseDetect2.pulse_detect_ff(2.5, pulse_duration, int(final_samp_rate))
+        self.VHFPulseDetect_pulse_detect_ff_0 = VHFPulseDetect2.pulse_detect_ff(3, pulse_duration, int(final_samp_rate))
         self.PhaseLockLoop_0 = PhaseLockLoop(
             pllFreqMax=100,
             pulse_duration=pulse_duration,
@@ -287,30 +252,24 @@ class PulseDetectGUI(gr.top_block, Qt.QWidget):
             pulse_freq=pulse_freq,
             samp_rate=samp_rate,
         )
-        self.AirspyFileSource_0 = AirspyFileSource(
-            samp_rate=samp_rate,
-        )
 
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.AirspyFileSource_0, 0), (self.blocks_selector_0, 1))
-        self.connect((self.AirspySource_0, 0), (self.blocks_selector_0, 0))
+        self.connect((self.AirspySource_0, 0), (self.PhaseLockLoop_0, 0))
         self.connect((self.PhaseLockLoop_0, 0), (self.VHFPulseDetect_pulse_detect_ff_0, 0))
         self.connect((self.PhaseLockLoop_0, 0), (self.qtgui_time_sink_x_0, 0))
-        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 5), (self.qtgui_time_sink_x_0_0, 5))
-        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 1), (self.qtgui_time_sink_x_0_0, 1))
-        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 0), (self.qtgui_time_sink_x_0_0, 0))
-        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 3), (self.qtgui_time_sink_x_0_0, 3))
         self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 4), (self.qtgui_time_sink_x_0_0, 4))
+        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 3), (self.qtgui_time_sink_x_0_0, 3))
+        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 0), (self.qtgui_time_sink_x_0_0, 0))
         self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 2), (self.qtgui_time_sink_x_0_0, 2))
-        self.connect((self.blocks_selector_0, 0), (self.PhaseLockLoop_0, 0))
-        self.connect((self.blocks_selector_0, 0), (self.qtgui_freq_sink_x_0, 0))
+        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 1), (self.qtgui_time_sink_x_0_0, 1))
+        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 5), (self.qtgui_time_sink_x_0_0, 5))
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "PulseDetectGUI")
+        self.settings = Qt.QSettings("GNU Radio", "AirspyGui")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -327,16 +286,8 @@ class PulseDetectGUI(gr.top_block, Qt.QWidget):
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
         self.set_final_samp_rate(self.samp_rate/self.total_decimation)
-        self.AirspyFileSource_0.set_samp_rate(self.samp_rate)
         self.AirspySource_0.set_samp_rate(self.samp_rate)
         self.PhaseLockLoop_0.set_samp_rate(self.samp_rate/(16*16*4))
-
-    def get_source_index(self):
-        return self.source_index
-
-    def set_source_index(self, source_index):
-        self.source_index = source_index
-        self._source_index_callback(self.source_index)
 
     def get_pulse_freq(self):
         return self.pulse_freq
@@ -373,7 +324,7 @@ class PulseDetectGUI(gr.top_block, Qt.QWidget):
 
 
 
-def main(top_block_cls=PulseDetectGUI, options=None):
+def main(top_block_cls=AirspyGui, options=None):
     if gr.enable_realtime_scheduling() != gr.RT_OK:
         print("Error: failed to enable real-time scheduling.")
 

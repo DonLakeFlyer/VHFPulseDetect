@@ -1,0 +1,28 @@
+id: AirspyFileSource
+label: Airspyfilesource
+category: '[GRC Hier Blocks]'
+
+parameters:
+-   id: samp_rate
+    label: Sample Rate
+    dtype: real
+    default: 3e6
+    hide: none
+
+inputs: []
+
+outputs:
+-   label: Decimated Output
+    dtype: complex
+    vlen: 1
+
+templates:
+    imports: 'from AirspyFileSource import AirspyFileSource  # grc-generated hier_block'
+    make: "AirspyFileSource(\n    samp_rate=${ samp_rate },\n)"
+    callbacks:
+    - set_samp_rate(${ samp_rate })
+
+documentation: /home/parallels/repos/VHFPulseDetect/gnuradio/AirspyFileSource.py
+grc_source: /home/parallels/repos/VHFPulseDetect/gnuradio/AirspyFileSource.grc
+
+file_format: 1

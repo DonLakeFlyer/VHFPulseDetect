@@ -10,7 +10,7 @@ options:
     gen_linking: dynamic
     generate_options: qt_gui
     hier_block_src_path: '.:'
-    id: PulseDetectGUI
+    id: AirspyGui
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -33,34 +33,17 @@ options:
 
 blocks:
 - name: final_samp_rate
-  id: variable_qtgui_chooser
+  id: variable
   parameters:
     comment: ''
-    gui_hint: 1,0,1,1
-    label: ''
-    label0: Airspy
-    label1: Audio
-    label2: Audio
-    label3: ''
-    label4: ''
-    labels: '[]'
-    num_opts: '2'
-    option1: '16000'
-    option2: '2'
-    option3: '3'
-    option4: '4'
-    options: '[0, 1, 2]'
-    orient: Qt.QHBoxLayout
-    type: real
-    value: samp_rate/(16*16*4)
-    widget: radio_buttons
+    value: '4000'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [154, 156]
+    coordinate: [200, 93]
     rotation: 0
-    state: true
+    state: enabled
 - name: gain
   id: variable_qtgui_range
   parameters:
@@ -79,7 +62,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [360, 164]
+    coordinate: [580, 8]
+    rotation: 0
+    state: enabled
+- name: pulse_duration
+  id: variable
+  parameters:
+    comment: ''
+    value: '0.015'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [450, 94]
     rotation: 0
     state: enabled
 - name: pulse_freq
@@ -94,96 +89,58 @@ blocks:
     coordinate: [8, 93]
     rotation: 0
     state: enabled
-- name: samp_rate
-  id: variable
-  parameters:
-    comment: ''
-    value: 3e6
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [104, 93]
-    rotation: 0
-    state: enabled
-- name: source_index
-  id: variable_qtgui_chooser
-  parameters:
-    comment: ''
-    gui_hint: 0,0,1,1
-    label: ''
-    label0: Airspy SDR
-    label1: Airspy File
-    label2: Audio
-    label3: ''
-    label4: ''
-    labels: '[]'
-    num_opts: '3'
-    option1: '1'
-    option2: '2'
-    option3: '3'
-    option4: '4'
-    options: '[0, 1, 2]'
-    orient: Qt.QHBoxLayout
-    type: int
-    value: '0'
-    widget: radio_buttons
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [9, 155]
-    rotation: 0
-    state: true
-- name: total_decimation
-  id: variable
-  parameters:
-    comment: ''
-    value: 16*16*4
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [200, 93]
-    rotation: 0
-    state: enabled
-- name: PulseDetectBase
-  id: PulseDetectBase
+- name: AudioSource_0
+  id: AudioSource
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    final_samp_rate: final_samp_rate
-    gain: '21'
     maxoutbuf: '0'
     minoutbuf: '0'
-    pulse_duration: '0.015'
-    pulse_freq: pulse_freq
-    samp_rate: samp_rate
-    source_index: source_index
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 392]
+    coordinate: [33, 293]
     rotation: 0
     state: enabled
-- name: blocks_vector_sink_x_0
-  id: blocks_vector_sink_x
+- name: PhaseLockLoop_0
+  id: PhaseLockLoop
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    reserve_items: '1024'
-    type: complex
-    vlen: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    pllFreqMax: '100'
+    pulse_duration: pulse_duration
+    samp_rate: final_samp_rate
+    wnT: math.pi/4.0*0+0.635
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [219, 617]
+    coordinate: [602, 303]
     rotation: 0
-    state: disabled
+    state: enabled
+- name: VHFPulseDetect_pulse_detect_ff_0
+  id: VHFPulseDetect_pulse_detect_ff
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    pulseDuration: pulse_duration
+    sampleRate: int(final_samp_rate)
+    threshold: '2.5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [957, 68]
+    rotation: 0
+    state: true
 - name: import_0
   id: import
   parameters:
@@ -287,7 +244,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [364, 486]
+    coordinate: [1104, 544]
     rotation: 0
     state: enabled
 - name: qtgui_number_sink_0
@@ -350,9 +307,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [360, 287]
+    coordinate: [1111, 306]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: qtgui_time_sink_x_0
   id: qtgui_time_sink_x
   parameters:
@@ -447,14 +404,118 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [360, 382]
+    coordinate: [1103, 436]
+    rotation: 0
+    state: enabled
+- name: qtgui_time_sink_x_0_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'True'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'True'
+    gui_hint: 5,0,1,1
+    label1: pulseDetect
+    label10: zero
+    label2: pulse
+    label3: movingAverage
+    label4: movingVariance
+    label5: movingStdDev
+    label6: threshold
+    label7: Re{Ref Out}
+    label8: Im{Ref Out}
+    label9: Ref Frequency
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '"Pulse Processing Views"'
+    nconnections: '6'
+    size: int(final_samp_rate*10.0)
+    srate: final_samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '0'
+    style2: '3'
+    style3: '2'
+    style4: '2'
+    style5: '1'
+    style6: '0'
+    style7: '1'
+    style8: '1'
+    style9: '3'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '1'
+    ymin: '-1'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1259, 67]
     rotation: 0
     state: enabled
 
 connections:
-- [PulseDetectBase, '0', qtgui_number_sink_0, '0']
-- [PulseDetectBase, '0', qtgui_time_sink_x_0, '0']
-- [PulseDetectBase, '1', qtgui_freq_sink_x_0, '0']
+- [AudioSource_0, '0', PhaseLockLoop_0, '0']
+- [PhaseLockLoop_0, '0', VHFPulseDetect_pulse_detect_ff_0, '0']
+- [PhaseLockLoop_0, '0', qtgui_number_sink_0, '0']
+- [PhaseLockLoop_0, '0', qtgui_time_sink_x_0, '0']
+- [VHFPulseDetect_pulse_detect_ff_0, '0', qtgui_time_sink_x_0_0, '0']
+- [VHFPulseDetect_pulse_detect_ff_0, '1', qtgui_time_sink_x_0_0, '1']
+- [VHFPulseDetect_pulse_detect_ff_0, '2', qtgui_time_sink_x_0_0, '2']
+- [VHFPulseDetect_pulse_detect_ff_0, '3', qtgui_time_sink_x_0_0, '3']
+- [VHFPulseDetect_pulse_detect_ff_0, '4', qtgui_time_sink_x_0_0, '4']
+- [VHFPulseDetect_pulse_detect_ff_0, '5', qtgui_time_sink_x_0_0, '5']
 
 metadata:
   file_format: 1

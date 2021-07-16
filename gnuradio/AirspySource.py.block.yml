@@ -1,0 +1,41 @@
+id: AirspySource
+label: Airspysource
+category: '[GRC Hier Blocks]'
+
+parameters:
+-   id: gain
+    label: Gain
+    dtype: int
+    default: '21'
+    hide: none
+-   id: pulse_freq
+    label: Pulse Freq
+    dtype: int
+    default: '146000000'
+    hide: none
+-   id: samp_rate
+    label: Sample Rate
+    dtype: real
+    default: 3e6
+    hide: none
+
+inputs: []
+
+outputs:
+-   label: Decimated Output
+    dtype: complex
+    vlen: 1
+
+templates:
+    imports: 'from AirspySource import AirspySource  # grc-generated hier_block'
+    make: "AirspySource(\n    gain=${ gain },\n    pulse_freq=${ pulse_freq },\n \
+        \   samp_rate=${ samp_rate },\n)"
+    callbacks:
+    - set_gain(${ gain })
+    - set_pulse_freq(${ pulse_freq })
+    - set_samp_rate(${ samp_rate })
+
+documentation: /home/parallels/repos/VHFPulseDetect/gnuradio/AirspySource.py
+grc_source: /home/parallels/repos/VHFPulseDetect/gnuradio/AirspySource.grc
+
+file_format: 1

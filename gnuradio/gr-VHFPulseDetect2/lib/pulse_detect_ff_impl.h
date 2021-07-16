@@ -49,6 +49,7 @@ namespace gr {
      private:
 
         unsigned int _sampleCount       = 0;
+        unsigned int _lastPulseSampleCount       = 0;
         double  _sampleRate;
         float   _pulseDuration;
         int     _minSamplesForPulse;

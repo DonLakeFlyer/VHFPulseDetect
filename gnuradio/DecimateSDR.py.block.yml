@@ -1,0 +1,31 @@
+id: DecimateSDR
+label: Decimatesdr
+category: '[GRC Hier Blocks]'
+
+parameters:
+-   id: samp_rate
+    label: Sample Rate
+    dtype: real
+    default: 3e6
+    hide: none
+
+inputs:
+-   label: in
+    dtype: complex
+    vlen: 1
+
+outputs:
+-   label: decimated_spectrum
+    dtype: complex
+    vlen: 1
+
+templates:
+    imports: 'from DecimateSDR import DecimateSDR  # grc-generated hier_block'
+    make: "DecimateSDR(\n    samp_rate=${ samp_rate },\n)"
+    callbacks:
+    - set_samp_rate(${ samp_rate })
+
+documentation: /home/parallels/repos/VHFPulseDetect/gnuradio/DecimateSDR.py
+grc_source: /home/parallels/repos/VHFPulseDetect/gnuradio/DecimateSDR.grc
+
+file_format: 1

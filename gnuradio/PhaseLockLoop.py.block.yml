@@ -1,0 +1,50 @@
+id: PhaseLockLoop
+label: Phaselockloop
+category: '[GRC Hier Blocks]'
+
+parameters:
+-   id: pllFreqMax
+    label: PLL Freq Max
+    dtype: real
+    default: '100'
+    hide: none
+-   id: pulse_duration
+    label: Pulse duration (secs)
+    dtype: real
+    default: '0.015'
+    hide: none
+-   id: samp_rate
+    label: Sample Rate
+    dtype: real
+    default: '2929'
+    hide: none
+-   id: wnT
+    label: PLL Loop BW
+    dtype: real
+    default: math.pi/4.0*0+0.635
+    hide: none
+
+inputs:
+-   label: in
+    dtype: complex
+    vlen: 1
+
+outputs:
+-   label: Average Pulse Output
+    dtype: float
+    vlen: 1
+
+templates:
+    imports: 'from PhaseLockLoop import PhaseLockLoop  # grc-generated hier_block'
+    make: "PhaseLockLoop(\n    pllFreqMax=${ pllFreqMax },\n    pulse_duration=${\
+        \ pulse_duration },\n    samp_rate=${ samp_rate },\n    wnT=${ wnT },\n)"
+    callbacks:
+    - set_pllFreqMax(${ pllFreqMax })
+    - set_pulse_duration(${ pulse_duration })
+    - set_samp_rate(${ samp_rate })
+    - set_wnT(${ wnT })
+
+documentation: /home/parallels/repos/VHFPulseDetect/gnuradio/PhaseLockLoop.py
+grc_source: /home/parallels/repos/VHFPulseDetect/gnuradio/PhaseLockLoop.grc
+
+file_format: 1

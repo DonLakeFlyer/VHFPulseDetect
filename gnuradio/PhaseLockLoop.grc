@@ -8,9 +8,9 @@ options:
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
-    generate_options: no_gui
+    generate_options: hb
     hier_block_src_path: '.:'
-    id: PulseDetectCmdLineUDP
+    id: PhaseLockLoop
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -32,209 +32,128 @@ options:
     state: enabled
 
 blocks:
-- name: final_samp_rate
+- name: fmax
   id: variable
   parameters:
     comment: ''
-    value: samp_rate/total_decimation
+    value: pllFreqMax
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [136, 181]
+    coordinate: [153, 332]
     rotation: 0
     state: enabled
-- name: total_decimation
+- name: fmin
   id: variable
   parameters:
     comment: ''
-    value: 16*16*final_decimation
+    value: -pllFreqMax
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 181]
+    coordinate: [225, 332]
     rotation: 0
     state: enabled
-- name: PulseDetectBase
-  id: PulseDetectBase
+- name: inter_pulse_duration
+  id: variable
+  parameters:
+    comment: ''
+    value: '2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [704, 13]
+    rotation: 0
+    state: enabled
+- name: analog_pll_refout_cc_0
+  id: analog_pll_refout_cc
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    final_decimation: '4'
-    gain: '21'
+    max_freq: math.pi/(samp_rate/2.0)*fmax
+    maxoutbuf: '0'
+    min_freq: math.pi/(samp_rate/2.0)*fmin
+    minoutbuf: '0'
+    w: wnT
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [153, 251]
+    rotation: 0
+    state: enabled
+- name: avg_pulse
+  id: pad_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    label: Average Pulse Output
+    num_streams: '1'
+    optional: 'False'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [385, 398]
+    rotation: 0
+    state: enabled
+- name: blocks_complex_to_mag_0_0
+  id: blocks_complex_to_mag
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    pulse_duration: pulse_duration
-    pulse_freq: '146000000'
-    samp_rate: samp_rate
+    vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 249]
+    coordinate: [384, 351]
     rotation: 0
     state: enabled
-- name: VHFPulseDetect_pulse_detect_ff_0
-  id: VHFPulseDetect_pulse_detect_ff
+- name: blocks_moving_average_xx_0_0
+  id: blocks_moving_average_xx
   parameters:
     affinity: ''
     alias: ''
     comment: ''
+    length: int(samp_rate*pulse_duration)
+    max_iter: int(samp_rate*inter_pulse_duration/10.0)
     maxoutbuf: '0'
     minoutbuf: '0'
-    pulseDuration: pulse_duration
-    sampleRate: int(final_samp_rate)
-    threshold: '2.5'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [374, 222]
-    rotation: 0
-    state: enabled
-- name: VHFPulseSender_udp_sender_f_0
-  id: VHFPulseSender_udp_sender_f
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [659, 197]
-    rotation: 0
-    state: enabled
-- name: blocks_vector_sink_x_0
-  id: blocks_vector_sink_x
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    reserve_items: '1024'
+    scale: '1'
     type: complex
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [232, 377]
+    coordinate: [385, 242]
     rotation: 0
     state: enabled
-- name: blocks_vector_sink_x_1
-  id: blocks_vector_sink_x
+- name: blocks_multiply_conjugate_cc_0
+  id: blocks_multiply_conjugate_cc
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    reserve_items: '1024'
-    type: float
+    maxoutbuf: '0'
+    minoutbuf: '0'
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [658, 318]
-    rotation: 0
-    state: enabled
-- name: blocks_vector_sink_x_1_1
-  id: blocks_vector_sink_x
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    reserve_items: '1024'
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [658, 350]
-    rotation: 0
-    state: enabled
-- name: blocks_vector_sink_x_1_1_0
-  id: blocks_vector_sink_x
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    reserve_items: '1024'
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [659, 254]
-    rotation: 0
-    state: enabled
-- name: blocks_vector_sink_x_1_2
-  id: blocks_vector_sink_x
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    reserve_items: '1024'
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [658, 286]
-    rotation: 0
-    state: enabled
-- name: blocks_vector_sink_x_1_3
-  id: blocks_vector_sink_x
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    reserve_items: '1024'
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [659, 382]
-    rotation: 0
-    state: enabled
-- name: final_decimation
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: ''
-    short_id: ''
-    type: intx
-    value: '4'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [197, 102]
-    rotation: 0
-    state: enabled
-- name: gain
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: ''
-    short_id: ''
-    type: intx
-    value: '21'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [324, 102]
+    coordinate: [384, 156]
     rotation: 0
     state: enabled
 - name: import_0
@@ -263,13 +182,50 @@ blocks:
     coordinate: [304, 12]
     rotation: 0
     state: enabled
+- name: pad_source_0
+  id: pad_source
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    label: in
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_streams: '1'
+    optional: 'False'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 153]
+    rotation: 0
+    state: true
+- name: pllFreqMax
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: PLL Freq Max
+    short_id: ''
+    type: eng_float
+    value: '100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [153, 507]
+    rotation: 0
+    state: enabled
 - name: pulse_duration
   id: parameter
   parameters:
     alias: ''
     comment: ''
     hide: none
-    label: ''
+    label: Pulse duration (secs)
     short_id: ''
     type: eng_float
     value: '0.015'
@@ -277,24 +233,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [413, 102]
-    rotation: 0
-    state: enabled
-- name: pulse_freq
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: ''
-    short_id: ''
-    type: intx
-    value: '146000000'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [8, 102]
+    coordinate: [539, 13]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -303,21 +242,42 @@ blocks:
     alias: ''
     comment: ''
     hide: none
-    label: ''
+    label: Sample Rate
     short_id: ''
     type: eng_float
-    value: 3e6
+    value: '2929'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [104, 102]
+    coordinate: [411, 13]
+    rotation: 0
+    state: enabled
+- name: wnT
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: PLL Loop BW
+    short_id: ''
+    type: eng_float
+    value: math.pi/4.0*0+0.635
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [153, 398]
     rotation: 0
     state: enabled
 
 connections:
-- [PulseDetectBase, '0', VHFPulseDetect_pulse_detect_ff_0, '0']
-- [PulseDetectBase, '1', blocks_vector_sink_x_0, '0']
+- [analog_pll_refout_cc_0, '0', blocks_multiply_conjugate_cc_0, '1']
+- [blocks_complex_to_mag_0_0, '0', avg_pulse, '0']
+- [blocks_moving_average_xx_0_0, '0', blocks_complex_to_mag_0_0, '0']
+- [blocks_multiply_conjugate_cc_0, '0', blocks_moving_average_xx_0_0, '0']
+- [pad_source_0, '0', analog_pll_refout_cc_0, '0']
+- [pad_source_0, '0', blocks_multiply_conjugate_cc_0, '0']
 
 metadata:
   file_format: 1

@@ -1,0 +1,65 @@
+id: PulseDetectBase
+label: Pulsedetectbase
+category: '[GRC Hier Blocks]'
+
+parameters:
+-   id: final_samp_rate
+    label: Final Sample Rate
+    dtype: real
+    default: 3e6/(16*16*4)
+    hide: none
+-   id: gain
+    label: Gain
+    dtype: int
+    default: '21'
+    hide: none
+-   id: pulse_duration
+    label: Pulse duration (secs)
+    dtype: real
+    default: '0.015'
+    hide: none
+-   id: pulse_freq
+    label: Pulse Freq
+    dtype: int
+    default: '146000000'
+    hide: none
+-   id: samp_rate
+    label: Sample Rate
+    dtype: real
+    default: 3e6
+    hide: none
+-   id: source_index
+    label: Source Index
+    dtype: int
+    default: '0'
+    hide: none
+
+inputs: []
+
+outputs:
+-   label: Average Pulse Output
+    dtype: float
+    vlen: 1
+-   label: Decimated Spectrum
+    dtype: complex
+    vlen: 1
+    optional: true
+
+templates:
+    imports: 'from PulseDetectBase import PulseDetectBase  # grc-generated hier_block'
+    make: "PulseDetectBase(\n    final_samp_rate=${ final_samp_rate },\n    gain=${\
+        \ gain },\n    pulse_duration=${ pulse_duration },\n    pulse_freq=${ pulse_freq\
+        \ },\n    samp_rate=${ samp_rate },\n    source_index=${ source_index },\n\
+        )"
+    callbacks:
+    - set_final_samp_rate(${ final_samp_rate })
+    - set_gain(${ gain })
+    - set_pulse_duration(${ pulse_duration })
+    - set_pulse_freq(${ pulse_freq })
+    - set_samp_rate(${ samp_rate })
+    - set_source_index(${ source_index })
+
+documentation: /home/parallels/repos/VHFPulseDetect/gnuradio/PulseDetectBase.py
+grc_source: /home/parallels/repos/VHFPulseDetect/gnuradio/PulseDetectBase.grc
+
+file_format: 1

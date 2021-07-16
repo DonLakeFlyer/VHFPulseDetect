@@ -1,0 +1,22 @@
+id: AudioSource
+label: Audiosource
+category: '[GRC Hier Blocks]'
+
+parameters: []
+
+inputs: []
+
+outputs:
+-   label: Complex Output
+    dtype: complex
+    vlen: 1
+
+templates:
+    imports: 'from AudioSource import AudioSource  # grc-generated hier_block'
+    make: AudioSource()
+    callbacks: []
+
+documentation: /home/parallels/repos/VHFPulseDetect/gnuradio/AudioSource.py
+grc_source: /home/parallels/repos/VHFPulseDetect/gnuradio/AudioSource.grc
+
+file_format: 1
