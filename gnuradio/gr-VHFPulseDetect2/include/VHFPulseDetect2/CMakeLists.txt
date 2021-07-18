@@ -22,5 +22,5 @@
 ########################################################################
 install(FILES
     api.h
-    pulse_detect__ff.h DESTINATION include/VHFPulseDetect2
+    pulse_detect_ff.h DESTINATION include/VHFPulseDetect2
 )
