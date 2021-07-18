@@ -551,6 +551,7 @@ blocks:
 connections:
 - [AirspyFileSource_0, '0', PhaseLockLoop_0, '0']
 - [AirspySource_0, '0', PhaseLockLoop_0, '0']
+- [AirspySource_0, '0', qtgui_freq_sink_x_0, '0']
 - [PhaseLockLoop_0, '0', VHFPulseDetect_pulse_detect_ff_0, '0']
 - [PhaseLockLoop_0, '0', qtgui_number_sink_0, '0']
 - [PhaseLockLoop_0, '0', qtgui_time_sink_x_0, '0']

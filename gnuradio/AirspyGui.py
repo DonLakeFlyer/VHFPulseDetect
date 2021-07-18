@@ -259,14 +259,15 @@ class AirspyGui(gr.top_block, Qt.QWidget):
         # Connections
         ##################################################
         self.connect((self.AirspySource_0, 0), (self.PhaseLockLoop_0, 0))
+        self.connect((self.AirspySource_0, 0), (self.qtgui_freq_sink_x_0, 0))
         self.connect((self.PhaseLockLoop_0, 0), (self.VHFPulseDetect_pulse_detect_ff_0, 0))
         self.connect((self.PhaseLockLoop_0, 0), (self.qtgui_time_sink_x_0, 0))
         self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 4), (self.qtgui_time_sink_x_0_0, 4))
-        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 3), (self.qtgui_time_sink_x_0_0, 3))
-        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 0), (self.qtgui_time_sink_x_0_0, 0))
-        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 2), (self.qtgui_time_sink_x_0_0, 2))
-        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 1), (self.qtgui_time_sink_x_0_0, 1))
         self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 5), (self.qtgui_time_sink_x_0_0, 5))
+        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 0), (self.qtgui_time_sink_x_0_0, 0))
+        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 3), (self.qtgui_time_sink_x_0_0, 3))
+        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 1), (self.qtgui_time_sink_x_0_0, 1))
+        self.connect((self.VHFPulseDetect_pulse_detect_ff_0, 2), (self.qtgui_time_sink_x_0_0, 2))
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "AirspyGui")
